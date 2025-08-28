@@ -1,15 +1,20 @@
 import React from "react";
 import { usePolling } from "../../src/lib/hooks/usePolling";
 
-function TestComponent() {
-    const result = usePolling({ callback: () => { console.log("Hello World"); }, interval: 1000, stopped: false });
-    return (<>
+interface TestComponentProps{
+    callback: () => void | Promise<void>
+}
+
+function TestComponent({ callback }: TestComponentProps) {
+    const result = usePolling({ callback: callback, interval: 1000, stopped: false });
+    return (
+        <>
         <div data-testid="test-component">
             Component using usePolling hook
-            <Button>Start polling</Button>
-            <Button Stopp polling/>
             <p>is polling? { result.isPolling}</p>
-        </div>;
+            <button onClick={result.startPolling}>Start polling</button>
+            <button onClick={result.stopPolling}>Stopp polling</button>
+        </div>
     </>)
 }
 
@@ -19,8 +24,12 @@ describe("usePolling Hook - Cypress Component Tests", () => {
             cy.spy(win.console, "log").as("consoleLog");
         });
 
-        cy.mount(<TestComponent />)
+        const callback = () => {
+            console.log("Hello World!");
+        }
 
+        cy.mount(<TestComponent callback={callback} />)
+        
         // Verify the component rendered
         cy.get('[data-testid="test-component"]').should("be.visible");
         cy.get('[data-testid="test-component"]').should("contain.text", "Component using usePolling hook");
@@ -30,7 +39,19 @@ describe("usePolling Hook - Cypress Component Tests", () => {
         cy.get("@consoleLog").should("have.been.calledOnce");
 
     });
-    it('Start polling works', () => {
+    it('Polling is stopped by default', () => {
         cy.clock();
-    })
+
+        const callback = () => {
+            console.log("Hello World");
+        }
+
+        cy.spy(callback).as("callback");
+        cy.mount(<TestComponent callback={callback} />)
+        cy.get("@callback").should("have.callCount", 0);
+
+    });
+    it('Start polling works', () => {
+
+    });
 });
