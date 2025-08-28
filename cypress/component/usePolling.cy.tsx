@@ -2,18 +2,18 @@ import React from "react";
 import { usePolling } from "../../src/lib/hooks/usePolling";
 
 interface TestComponentProps{
-    callback: () => void | Promise<void>
+    callbackFunction: () => void | Promise<void>
+    intervalValue: number
 }
 
-function TestComponent({ callback }: TestComponentProps) {
-    const result = usePolling({ callback: callback, interval: 1000, stopped: false });
+function TestComponent({ callbackFunction, intervalValue }: TestComponentProps) {
+    const result = usePolling({ callback: callbackFunction, interval: intervalValue, stopped: false });
     return (
         <>
         <div data-testid="test-component">
             Component using usePolling hook
-            <p data-cy="isrunning">is polling? { result.isPolling}</p>
             <button onClick={result.startPolling}>Start polling</button>
-            <button onClick={result.stopPolling}>Stopp polling</button>
+            <button onClick={result.stopPolling}>Stop polling</button>
         </div>
     </>)
 }
@@ -24,16 +24,14 @@ describe("usePolling Hook - Cypress Component Tests", () => {
             cy.spy(win.console, "log").as("consoleLog");
         });
 
-        const callback = () => {
-            console.log("Hello World!");
-        }
+        const callbackSpy = cy.spy(() => {
+            console.log('Hello World!');
+        }).as('callbackSpy');
 
-        cy.spy(callback).as("callback");
-
-        cy.mount(<TestComponent callback={callback} />)
+        cy.mount(<TestComponent  callbackFunction={callbackSpy} intervalValue={1000}/>)
     });
         
-    it('component mounts', () => {
+    it('Component mounts', () => {
         
         // Verify the component rendered
         cy.get('[data-testid="test-component"]').should("be.visible");
@@ -45,14 +43,31 @@ describe("usePolling Hook - Cypress Component Tests", () => {
 
     });
 
-    it('Polling is stopped by default', () => {
-        cy.get("@callback").should("have.callCount", 0);
+    it('Callback is not called on mount', () => {
+        cy.get('@callbackSpy').should('not.have.been.called');
     });
 
-    it('Start and stopp polling works', () => {
+    it('Start and stop polling works', () => {
+        cy.get('@callbackSpy').should('not.have.been.called');
         cy.contains('button', 'Start polling').click();
-        cy.wait(3000);
-        cy.get("@callback").should("have.callCount", 3);
+        cy.wait(1000);
+        cy.get('@callbackSpy').should('have.been.called');
+        cy.contains('button', 'Stop polling').click();
+    });
+
+    it('Setting an interval works', () => {
+
+        const callbackSpy = cy.spy(() => {
+            console.log('Setting an interval works!');
+        }).as('callbackSpy');
+
+        cy.mount(<TestComponent  callbackFunction={callbackSpy} intervalValue={3000}/>)
+
+        cy.get('@callbackSpy').should('not.have.been.called');
+        cy.contains('button', 'Start polling').click();
+        cy.wait(3100);
+        cy.get('@callbackSpy').should('have.been.called');
+        cy.contains('button', 'Stop polling').click();
     });
 
 });
