@@ -1,2 +1,4 @@
 .eslintrc.cjs
 rollup.config.mjs
+vite.config.ts
+cypress.config.ts
