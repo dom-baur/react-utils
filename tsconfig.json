@@ -15,8 +15,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "types": ["cypress"]
   },
-  "include": ["src", "test"],
+  "include": ["src", "test", "cypress"],
   "exclude": ["node_modules", "dist"]
 }
