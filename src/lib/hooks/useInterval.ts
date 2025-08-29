@@ -31,7 +31,7 @@ interface UseIntervalResult {
    */
   startInterval: () => void;
   /**
-   * The function to stopp polling
+   * The function to stop polling
    */
   stopInterval(): void;
 }
