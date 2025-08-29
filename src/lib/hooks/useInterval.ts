@@ -23,7 +23,7 @@ interface UseIntervalProps {
  */
 interface UseIntervalResult {
   /**
-   * The current state of the hook wheter it's polling or not
+   * The current state of the hook whether it's polling or not
    */
   isRunning: boolean;
   /**
