@@ -47,7 +47,7 @@ const usePolling = (props: UsePollingProps): UsePollingResult => {
   const [isPolling, setIsPolling] = useState(false);
 
   const persistedIsPolling = useRef<boolean>();
-  const timeout = useRef<NodeJS.Timeout>();
+  const timeout = useRef<ReturnType<typeof setTimeout>>();
 
   persistedIsPolling.current = isPolling;
 
