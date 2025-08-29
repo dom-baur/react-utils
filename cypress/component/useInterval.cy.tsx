@@ -34,7 +34,7 @@ describe("useInterval Hook - Cypress Component Tests", () => {
     cy.get('[data-testid="test-component"]').should("contain.text", "Component using useInterval hook");
   });
 
-  it("should not start to poll when autostart is set on false", () => {
+  it("should not start the interval when autostart is set on false", () => {
     const callbackSpy = cy
       .spy(() => {
         console.log("Does not start the interval automaticly");
@@ -59,10 +59,11 @@ describe("useInterval Hook - Cypress Component Tests", () => {
     cy.contains("button", "Start interval").click();
     cy.wait(1000);
     cy.contains("button", "Stop interval").click();
+    cy.wait(3000);
     cy.get("@callbackSpy").should("have.been.calledOnce");
   });
 
-  it("should start to poll automatically when autostart is true", () => {
+  it("should start the interval automatically when autostart is true", () => {
     const callbackSpy = cy
       .spy(() => {
         console.log("The interval runs automatically when autostart is true.");
@@ -74,7 +75,7 @@ describe("useInterval Hook - Cypress Component Tests", () => {
     cy.get("@callbackSpy").should("have.been.calledThrice");
   });
 
-  it("should poll continuously until stopped when autostart is true", () => {
+  it("should be running continuously until stopped when autostart is true", () => {
     const callbackSpy = cy
       .spy(() => {
         console.log("The interval runs automatically until it gets stopped.");

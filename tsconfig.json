@@ -15,8 +15,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "types": ["node"]
+    "baseUrl": "."
   },
   "include": ["src", "test"],
   "exclude": ["node_modules", "dist"]

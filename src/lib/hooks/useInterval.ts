@@ -1,7 +1,7 @@
 import { useRef, useCallback, useState, useEffect } from "react";
 
 /**
- * The interface for the polling properties
+ * The interface for the properties of the useInterval hook
  */
 interface UseIntervalProps {
   /**
@@ -9,31 +9,32 @@ interface UseIntervalProps {
    */
   callback: () => void;
   /**
-   * The interval of the polling function
+   * The interval in miliseconds for the interval function
    */
   interval: number;
   /**
-   * The boolean to set if the hook is initially polling or not
+   * The boolean to set if the interval should start automatically or not
+   * @default false
    */
-  autoStart: boolean;
+  autoStart?: boolean;
 }
 
 /**
- * The interface for the polling result
+ * The interface for the result of the useInterval hook
  */
 interface UseIntervalResult {
   /**
-   * The current state of the hook wheter it's polling or not
+   * The current state whether the interval is running or not
    */
   isRunning: boolean;
   /**
-   * The function to start polling
+   * The function to start the interval
    */
   startInterval: () => void;
   /**
-   * The function to stopp polling
+   * The function to stopp the interval
    */
-  stopInterval(): void;
+  stopInterval: () => void;
 }
 
 /**
@@ -50,7 +51,6 @@ const useInterval = (props: UseIntervalProps): UseIntervalResult => {
   const startInterval = useCallback(() => {
     setIsRunning((prevIsRunning) => {
       if (!prevIsRunning && (!intervalRef.current || intervalRef.current === -1)) {
-        console.log("Starting interval");
         intervalRef.current = window.setInterval(callbackRef.current, interval);
       }
       return true;
@@ -65,7 +65,6 @@ const useInterval = (props: UseIntervalProps): UseIntervalResult => {
 
   useEffect(() => {
     callbackRef.current = callback;
-    console.log("Starting interval", isRunning);
     if (isRunning) {
       startInterval();
     }
