@@ -16,8 +16,8 @@
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
-    "types": ["cypress", "node"]
+    "types": ["node"]
   },
-  "include": ["src", "test", "cypress"],
+  "include": ["src", "test"],
   "exclude": ["node_modules", "dist"]
 }
