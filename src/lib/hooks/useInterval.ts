@@ -32,7 +32,7 @@ interface UseIntervalResult {
    */
   startInterval: () => void;
   /**
-   * The function to stopp the interval
+   * The function to stop the interval
    */
   stopInterval: () => void;
 }
