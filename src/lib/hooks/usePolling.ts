@@ -2,7 +2,6 @@ import { useState, useRef, useCallback, useEffect } from "react";
 
 /**
  * The interface for the polling properties
- * @param interval
  */
 interface UsePollingProps {
   /**
@@ -14,7 +13,7 @@ interface UsePollingProps {
    */
   interval: number;
   /**
-   *
+   * The boolean to set if the hook is stopped or not
    */
   stopped: boolean;
 }
@@ -40,7 +39,7 @@ interface UsePollingResult {
 /**
  * The polling hook
  * @param props The parameters to set the function for the polling, the interval and if the hook is stopped or not
- * @returns The functions startPolling, stoppPolling and a state wheter it's currently polling or not
+ * @returns The functions startPolling, stoppPolling and a boolean wheter the hook is currently polling or not
  */
 const usePolling = (props: UsePollingProps): UsePollingResult => {
   const { callback, interval, stopped } = props;
