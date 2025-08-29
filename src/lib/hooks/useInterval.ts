@@ -50,7 +50,6 @@ const useInterval = (props: UseIntervalProps): UseIntervalResult => {
   const startInterval = useCallback(() => {
     setIsRunning((prevIsRunning) => {
       if (!prevIsRunning && (!intervalRef.current || intervalRef.current === -1)) {
-        console.log("Starting interval");
         intervalRef.current = window.setInterval(callbackRef.current, interval);
       }
       return true;
